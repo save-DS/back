@@ -75,6 +75,17 @@ class GameState:
         # AI 힌트 호출 횟수 (rate limit용)
         self.ai_query_count = 0
 
+        # ----- 미로 모드 관련 -----
+        self.maze_grid: list[list[int]] = []
+        self.maze_start: tuple[int, int] | None = None
+        self.maze_exit: tuple[int, int] | None = None
+        # 함정 좌표는 백엔드만 알고 있음. to_dict()에서 제외 (보안)
+        self.maze_traps: set[tuple[int, int]] = set()
+        self.maze_position: tuple[int, int] | None = None
+        self.maze_steps = 0
+        self.maze_trap_hits = 0
+        self.maze_reached_exit = False
+
         # 게임 상태: "playing" | "cleared" | "failed"
         self.status = "playing"
 
@@ -123,6 +134,7 @@ class GameState:
 
         커스텀 클래스(Inventory/Stack/Queue)와 set은 모두
         JSON 호환 형태(list)로 변환한다.
+        주의: maze_traps는 보안상 응답에서 제외 (함정은 플레이어에게 숨김).
         """
         return {
             "mode": self.mode,
@@ -135,6 +147,14 @@ class GameState:
             "view_stack": self.view_stack.to_list(),
             "event_queue": self.event_queue.to_list(),
             "ai_query_count": self.ai_query_count,
+            # 미로 관련 (traps는 제외)
+            "maze_grid": self.maze_grid,
+            "maze_start": list(self.maze_start) if self.maze_start else None,
+            "maze_exit": list(self.maze_exit) if self.maze_exit else None,
+            "maze_position": list(self.maze_position) if self.maze_position else None,
+            "maze_steps": self.maze_steps,
+            "maze_trap_hits": self.maze_trap_hits,
+            "maze_reached_exit": self.maze_reached_exit,
             "status": self.status,
         }
 
