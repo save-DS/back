@@ -1,0 +1,29 @@
+{
+  "cabinet_password": {
+    "id": "cabinet_password",
+    "type": "number",
+    "length": 4,
+    "answer": "3962",
+    "required_clues": ["clue_3", "clue_9", "clue_6", "clue_2"],
+    "hint": "흩어진 4개의 단서에 적힌 숫자를 모으면 된다.",
+    "reward_item": "escape_key"
+  },
+  "computer_login": {
+    "id": "computer_login",
+    "type": "number",
+    "length": 4,
+    "answer": "0418",
+    "required_clues": ["birthday_0418"],
+    "hint": "달력에 표시된 날짜를 4자리 숫자로 입력하라.",
+    "reward_clue": "research_doc"
+  },
+  "escape_door_keypad": {
+    "id": "escape_door_keypad",
+    "type": "word",
+    "answer": "bang",
+    "required_clues": ["code_note", "research_doc"],
+    "required_item": "escape_key",
+    "hint": "코드 노트의 문자 매핑으로 연구일지의 코드를 해석하라.",
+    "triggers_clear": true
+  }
+}
