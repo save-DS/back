@@ -4,10 +4,11 @@ GameState - 게임의 전체 상태를 관리하는 싱글톤 클래스.
 모든 시스템(인벤토리, 퍼즐, 조사, 이벤트 등)이 이 클래스를 통해
 상태를 읽고 쓴다. 즉 "단일 진실의 원천(Single Source of Truth)" 역할.
 
-[자료구조 사용]
-- 딕셔너리: 전체 상태 직렬화 (to_dict)
-- 리스트: inventory, found_clues, view_stack, event_queue
-- 셋:     solved_puzzles, investigated_objects (중복 방지)
+[자료구조 모듈 사용]
+- Inventory : 인벤토리 (리스트 + 셋)
+- Stack     : found_clues, view_stack (스택)
+- Queue     : event_queue (큐)
+- set       : solved_puzzles, investigated_objects (파이썬 내장 셋)
 
 [모드]
 - "first_person" : 1인칭 탐색 모드
@@ -18,6 +19,9 @@ GameState - 게임의 전체 상태를 관리하는 싱글톤 클래스.
 - "cleared"  : 클리어
 - "failed"   : 실패
 """
+from services.inventory import Inventory
+from services.clue_stack import Stack
+from services.event_queue import Queue
 
 
 class GameState:
@@ -52,23 +56,21 @@ class GameState:
         self.current_room = "main_lab"
         self.current_view = "center"   # left | center | right
 
-        # 인벤토리 (리스트) - 보유 아이템 ID 목록
-        self.inventory = []
+        # 인벤토리 (리스트 + 셋)
+        self.inventory = Inventory(max_size=8)
 
-        # 해결한 퍼즐 (셋) - 중복 방지
-        self.solved_puzzles = set()
+        # 해결한 퍼즐 / 조사한 오브젝트 (셋 - 중복 방지)
+        self.solved_puzzles: set[str] = set()
+        self.investigated_objects: set[str] = set()
 
-        # 조사 완료한 오브젝트 (셋) - 중복 방지
-        self.investigated_objects = set()
+        # 발견한 단서 (스택 - 최신순 표시용)
+        self.found_clues = Stack()
 
-        # 발견한 단서 (리스트) - 순서 보존
-        self.found_clues = []
+        # 화면 히스토리 (스택 - 뒤로가기용)
+        self.view_stack = Stack()
 
-        # 화면 히스토리 (스택) - 뒤로가기용
-        self.view_stack = []
-
-        # 이벤트 큐 (큐) - 순차 처리할 알림/이벤트
-        self.event_queue = []
+        # 이벤트 큐 (큐 - 순차 처리)
+        self.event_queue = Queue()
 
         # AI 힌트 호출 횟수 (rate limit용)
         self.ai_query_count = 0
@@ -119,18 +121,19 @@ class GameState:
     def to_dict(self) -> dict:
         """JSON 응답용 딕셔너리로 직렬화.
 
-        주의: set 타입은 JSON으로 못 보내기 때문에 list로 변환한다.
+        커스텀 클래스(Inventory/Stack/Queue)와 set은 모두
+        JSON 호환 형태(list)로 변환한다.
         """
         return {
             "mode": self.mode,
             "current_room": self.current_room,
             "current_view": self.current_view,
-            "inventory": self.inventory,
+            "inventory": self.inventory.to_list(),
             "solved_puzzles": list(self.solved_puzzles),
             "investigated_objects": list(self.investigated_objects),
-            "found_clues": self.found_clues,
-            "view_stack": self.view_stack,
-            "event_queue": self.event_queue,
+            "found_clues": self.found_clues.to_list_newest_first(),
+            "view_stack": self.view_stack.to_list(),
+            "event_queue": self.event_queue.to_list(),
             "ai_query_count": self.ai_query_count,
             "status": self.status,
         }
@@ -141,33 +144,47 @@ game_state = GameState()
 
 
 # ----------------------------------------------------------------------
-# 단독 실행시 동작 테스트
+# 단독 실행 테스트
 # ----------------------------------------------------------------------
 if __name__ == "__main__":
     gs = GameState()
     print("[1] 초기 상태")
     print(gs.to_dict())
 
-    print("\n[2] 인벤토리에 손전등 추가")
-    gs.inventory.append("flashlight")
-    print(gs.to_dict())
+    print("\n[2] 인벤토리에 손전등/건전지 추가 (Inventory 클래스)")
+    gs.inventory.add("flashlight")
+    gs.inventory.add("battery")
+    print(gs.to_dict()["inventory"])
 
-    print("\n[3] 시점을 왼쪽으로 변경")
+    print("\n[3] 시점을 왼쪽으로 변경, 직전 화면 스택에 push")
+    gs.view_stack.push("main_view:center")
     gs.update_state("current_view", "left")
-    print(gs.to_dict())
+    print("current_view:", gs.current_view)
+    print("view_stack:", gs.view_stack.to_list())
 
-    print("\n[4] 퍼즐 'cabinet_password' 해결")
+    print("\n[4] 퍼즐 'cabinet_password' 해결 (set)")
     gs.solved_puzzles.add("cabinet_password")
-    print(gs.to_dict())
+    print("solved_puzzles:", gs.to_dict()["solved_puzzles"])
 
-    print("\n[5] 모드 전환 (미로)")
+    print("\n[5] 단서 3개 발견 (Stack - 최신순)")
+    gs.found_clues.push("clue_3")
+    gs.found_clues.push("clue_9")
+    gs.found_clues.push("clue_6")
+    print("found_clues (최신순):", gs.to_dict()["found_clues"])
+
+    print("\n[6] 이벤트 큐에 알림 enqueue (Queue)")
+    gs.event_queue.enqueue({"type": "warning", "text": "정전 임박!"})
+    gs.event_queue.enqueue({"type": "narration", "text": "전기가 꺼졌다"})
+    print("event_queue:", gs.to_dict()["event_queue"])
+
+    print("\n[7] 모드 전환 (미로)")
     gs.switch_mode("maze")
-    print(gs.to_dict())
+    print("mode:", gs.mode)
 
-    print("\n[6] 리셋")
+    print("\n[8] 리셋")
     gs.reset()
     print(gs.to_dict())
 
-    print("\n[7] 싱글톤 확인 (gs == gs2)")
+    print("\n[9] 싱글톤 확인")
     gs2 = GameState()
     print(f"같은 객체인가? {gs is gs2}")
