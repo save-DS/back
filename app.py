@@ -14,6 +14,8 @@ from api.move import move_bp
 from api.mode import mode_bp
 from api.maze import maze_bp
 from api.hint import hint_bp
+from api.ui import ui_bp
+from api.events import events_bp
 
 
 # Flask 앱 생성
@@ -36,6 +38,8 @@ app.register_blueprint(move_bp)
 app.register_blueprint(mode_bp)
 app.register_blueprint(maze_bp)
 app.register_blueprint(hint_bp)
+app.register_blueprint(ui_bp)
+app.register_blueprint(events_bp)
 
 
 # ----------------------------------------------------------------------
