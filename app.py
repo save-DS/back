@@ -5,6 +5,13 @@ Flask 서버를 실행하는 메인 파일.
 from flask import Flask, jsonify
 from flask_cors import CORS
 
+from api.game import game_bp
+from api.view import view_bp
+from api.investigate import investigate_bp
+from api.inventory import inventory_bp
+from api.puzzle import puzzle_bp
+from api.move import move_bp
+
 
 # Flask 앱 생성
 app = Flask(__name__)
@@ -14,6 +21,20 @@ app.json.ensure_ascii = False
 CORS(app)
 
 
+# ----------------------------------------------------------------------
+# 블루프린트 등록
+# ----------------------------------------------------------------------
+app.register_blueprint(game_bp)
+app.register_blueprint(view_bp)
+app.register_blueprint(investigate_bp)
+app.register_blueprint(inventory_bp)
+app.register_blueprint(puzzle_bp)
+app.register_blueprint(move_bp)
+
+
+# ----------------------------------------------------------------------
+# 헬스체크
+# ----------------------------------------------------------------------
 @app.route("/")
 def health():
     """헬스체크 - 서버가 살아있는지 확인하는 엔드포인트."""
