@@ -42,13 +42,21 @@ def find_shortest_path(
     maze: list[list[int]],
     start: tuple[int, int],
     goal: tuple[int, int],
+    avoid: set[tuple[int, int]] | None = None,
 ) -> list[tuple[int, int]] | None:
     """start에서 goal까지의 최단 경로를 좌표 리스트로 반환.
+
+    Args:
+        avoid: 피해야 할 좌표들의 셋 (예: 미로의 함정 위치)
 
     경로가 없으면 None.
     경로에는 start와 goal이 모두 포함된다.
     """
+    if avoid is None:
+        avoid = set()
     if not _is_walkable(maze, *start) or not _is_walkable(maze, *goal):
+        return None
+    if start in avoid or goal in avoid:
         return None
     if start == goal:
         return [start]
@@ -62,6 +70,8 @@ def find_shortest_path(
         for dr, dc, _ in DIRECTIONS:
             next_pos = (current[0] + dr, current[1] + dc)
             if next_pos in visited or not _is_walkable(maze, *next_pos):
+                continue
+            if next_pos in avoid:
                 continue
             visited.add(next_pos)
             came_from[next_pos] = current
@@ -89,18 +99,23 @@ def next_step(
     maze: list[list[int]],
     current: tuple[int, int],
     goal: tuple[int, int],
+    avoid: set[tuple[int, int]] | None = None,
 ) -> dict | None:
     """현재 위치에서 goal까지 최단 경로 상의 "다음 한 칸" 정보 반환.
+
+    Args:
+        avoid: 피해야 할 좌표들의 셋 (함정 등)
 
     Returns:
         {
             "direction": "up" | "down" | "left" | "right",
             "next_position": (row, col),
-            "remaining_steps": int
+            "remaining_steps": int,
+            "path": [(row, col), ...]   # 전체 경로 (힌트 시각화용)
         }
         경로 없으면 None.
     """
-    path = find_shortest_path(maze, current, goal)
+    path = find_shortest_path(maze, current, goal, avoid=avoid)
     if path is None or len(path) < 2:
         return None
 
@@ -112,6 +127,7 @@ def next_step(
         "direction": direction,
         "next_position": next_pos,
         "remaining_steps": len(path) - 1,
+        "path": path,
     }
 
 

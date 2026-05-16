@@ -11,6 +11,9 @@ from api.investigate import investigate_bp
 from api.inventory import inventory_bp
 from api.puzzle import puzzle_bp
 from api.move import move_bp
+from api.mode import mode_bp
+from api.maze import maze_bp
+from api.hint import hint_bp
 
 
 # Flask 앱 생성
@@ -30,6 +33,9 @@ app.register_blueprint(investigate_bp)
 app.register_blueprint(inventory_bp)
 app.register_blueprint(puzzle_bp)
 app.register_blueprint(move_bp)
+app.register_blueprint(mode_bp)
+app.register_blueprint(maze_bp)
+app.register_blueprint(hint_bp)
 
 
 # ----------------------------------------------------------------------
