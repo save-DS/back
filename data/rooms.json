@@ -1,0 +1,22 @@
+{
+  "main_lab": {
+    "id": "main_lab",
+    "name": "폐연구실",
+    "description": "오래된 폐연구실. 세 방향으로 탐색할 수 있다.",
+    "views": {
+      "left": {
+        "label": "탈출문 방향",
+        "objects": ["escape_door", "newspaper_pile", "bookshelf_clock", "rug", "memo_wall"]
+      },
+      "center": {
+        "label": "책상 방향",
+        "objects": ["whiteboard", "computer", "calendar", "desk_drawer", "shelf_book"]
+      },
+      "right": {
+        "label": "캐비닛 방향",
+        "objects": ["cabinet", "microscope", "code_note", "photo", "uv_poster", "bookshelf_right"]
+      }
+    },
+    "connected_rooms": []
+  }
+}

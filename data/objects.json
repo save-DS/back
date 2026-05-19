@@ -1,0 +1,145 @@
+{
+  "cabinet": {
+    "id": "cabinet",
+    "room": "main_lab",
+    "view": "right",
+    "name": "캐비닛",
+    "narration_default": "캐비닛이 있다. 안에 잠긴 상자가 보인다.",
+    "narration_locked": "비밀번호로 잠겨있다.",
+    "narration_solved": "...!! 열렸다! 카드키가 들어있다.",
+    "narration_wrong": "비밀번호가 일치하지 않습니다.",
+    "puzzle": "cabinet_password",
+    "gives_item_on_solve": "escape_key",
+    "initial_items": ["battery"]
+  },
+  "microscope": {
+    "id": "microscope",
+    "room": "main_lab",
+    "view": "right",
+    "name": "현미경",
+    "narration_default": "현미경이다. 흐릿하게 뭔가 적혀있는 것 같다.",
+    "narration_with_scope": "_ 9 _ _",
+    "narration_no_scope": "사용 가능한 스코프가 없습니다.",
+    "required_item": "microscope_scope",
+    "gives_clue_on_use": "clue_9"
+  },
+  "code_note": {
+    "id": "code_note",
+    "room": "main_lab",
+    "view": "right",
+    "name": "코드 노트",
+    "narration_default": "문자 매핑이 적혀있는 노트다.",
+    "gives_item": "code_note"
+  },
+  "photo": {
+    "id": "photo",
+    "room": "main_lab",
+    "view": "right",
+    "name": "사진",
+    "narration_default": "오래된 사진 한 장이 붙어있다."
+  },
+  "uv_poster": {
+    "id": "uv_poster",
+    "room": "main_lab",
+    "view": "right",
+    "name": "UV 포스터",
+    "narration_default": "UV 램프 사용법에 관한 포스터다. UV 빛으로 보이지 않는 글씨를 볼 수 있다고 적혀있다."
+  },
+  "bookshelf_right": {
+    "id": "bookshelf_right",
+    "room": "main_lab",
+    "view": "right",
+    "name": "오른쪽 책장",
+    "narration_default": "오래된 책들이 꽂혀있다."
+  },
+  "whiteboard": {
+    "id": "whiteboard",
+    "room": "main_lab",
+    "view": "center",
+    "name": "화이트보드",
+    "narration_default": "아무것도 적혀있지 않은 화이트보드다.",
+    "narration_with_uv": "3 _ _ _",
+    "required_item": "uv_flashlight",
+    "gives_clue_on_use": "clue_3"
+  },
+  "computer": {
+    "id": "computer",
+    "room": "main_lab",
+    "view": "center",
+    "name": "컴퓨터",
+    "narration_default": "잠긴 컴퓨터 화면이다. 비밀번호 4자리를 입력해야 한다.",
+    "narration_solved": "컴퓨터가 열렸다. 연구 일지가 보인다.",
+    "narration_wrong": "비밀번호가 일치하지 않습니다.",
+    "puzzle": "computer_login",
+    "gives_clue_on_solve": "research_doc"
+  },
+  "calendar": {
+    "id": "calendar",
+    "room": "main_lab",
+    "view": "center",
+    "name": "달력",
+    "narration_default": "달력의 4월 18일에 '생일'이라고 적혀있다.",
+    "gives_clue_on_investigate": "birthday_0418"
+  },
+  "desk_drawer": {
+    "id": "desk_drawer",
+    "room": "main_lab",
+    "view": "center",
+    "name": "책상 서랍",
+    "narration_default": "책상 서랍이다.",
+    "narration_opened": "손전등을 발견했다.",
+    "gives_item": "flashlight"
+  },
+  "shelf_book": {
+    "id": "shelf_book",
+    "room": "main_lab",
+    "view": "center",
+    "name": "왼쪽 책",
+    "narration_default": "책 사이에 무언가 끼워져 있다.",
+    "narration_opened": "현미경 스코프를 발견했다.",
+    "gives_item": "microscope_scope"
+  },
+  "escape_door": {
+    "id": "escape_door",
+    "room": "main_lab",
+    "view": "left",
+    "name": "탈출문",
+    "narration_default": "탈출문이다. 보안장치 덮개가 닫혀있다.",
+    "narration_unlocked": "QWERTY 키패드가 보인다. 영어 단어를 입력해야 한다.",
+    "narration_cleared": "탈출 성공!",
+    "required_item": "escape_key",
+    "puzzle": "escape_door_keypad",
+    "triggers_clear_on_solve": true
+  },
+  "newspaper_pile": {
+    "id": "newspaper_pile",
+    "room": "main_lab",
+    "view": "left",
+    "name": "서류 더미",
+    "narration_default": "서류 사이에 쪽지가 보인다.",
+    "gives_clue_on_investigate": "clue_6"
+  },
+  "bookshelf_clock": {
+    "id": "bookshelf_clock",
+    "room": "main_lab",
+    "view": "left",
+    "name": "책장 시계",
+    "narration_default": "망가진 시계다. 7시 24분을 가리키고 있다."
+  },
+  "rug": {
+    "id": "rug",
+    "room": "main_lab",
+    "view": "left",
+    "name": "러그",
+    "narration_default": "낡은 러그가 깔려있다.",
+    "narration_lifted": "러그 아래 바닥에 숫자가 적혀있다.",
+    "gives_clue_on_investigate": "clue_2"
+  },
+  "memo_wall": {
+    "id": "memo_wall",
+    "room": "main_lab",
+    "view": "left",
+    "name": "메모 벽",
+    "narration_default": "여러 연구 메모가 붙어있다."
+  }
+}

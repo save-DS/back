@@ -1,0 +1,45 @@
+{
+  "battery": {
+    "id": "battery",
+    "name": "건전지",
+    "description": "오래된 건전지. 손전등에 넣을 수 있을 것 같다.",
+    "icon": "battery.png",
+    "combinable_with": ["flashlight"],
+    "combine_result": "uv_flashlight"
+  },
+  "flashlight": {
+    "id": "flashlight",
+    "name": "손전등",
+    "description": "건전지가 없는 손전등.",
+    "icon": "flashlight.png",
+    "combinable_with": ["battery"],
+    "combine_result": "uv_flashlight"
+  },
+  "uv_flashlight": {
+    "id": "uv_flashlight",
+    "name": "UV 손전등",
+    "description": "건전지를 넣은 손전등. 자외선이 나온다.",
+    "icon": "uv_flashlight.png",
+    "usable_with": ["whiteboard"]
+  },
+  "escape_key": {
+    "id": "escape_key",
+    "name": "탈출키",
+    "description": "잠긴 상자에서 나온 카드키.",
+    "icon": "escape_key.png",
+    "usable_with": ["escape_door"]
+  },
+  "code_note": {
+    "id": "code_note",
+    "name": "코드 노트",
+    "description": "문자 매핑 코드가 적혀있는 노트.",
+    "icon": "code_note.png"
+  },
+  "microscope_scope": {
+    "id": "microscope_scope",
+    "name": "현미경 스코프",
+    "description": "현미경에 끼우는 렌즈.",
+    "icon": "scope.png",
+    "usable_with": ["microscope"]
+  }
+}
