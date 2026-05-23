@@ -27,8 +27,9 @@ from utils.data_loader import get_data
 from services.puzzle_graph import get_puzzle_graph
 
 
-# 게임 힌트용 모델. gemini-2.0-flash = 무료 티어, 빠름.
-MODEL = "gemini-2.0-flash"
+# 게임 힌트용 모델. gemini-2.5-flash = 무료 티어 + 빠름.
+# (2.5-flash는 기본 thinking이 켜져 출력 토큰을 잡아먹으므로 아래에서 thinking을 끈다)
+MODEL = "gemini-2.5-flash"
 MAX_TOKENS = 400
 
 _client = None
@@ -121,6 +122,8 @@ def ask_hint(question: str, state) -> str:
         config=types.GenerateContentConfig(
             system_instruction=_build_system_prompt(),
             max_output_tokens=MAX_TOKENS,
+            # thinking을 꺼서 출력 토큰이 thinking에 소모되지 않게 함 (응답 빔 방지)
+            thinking_config=types.ThinkingConfig(thinking_budget=0),
         ),
     )
     return (response.text or "").strip()

@@ -69,7 +69,7 @@ def _combine_items(item: dict, target_item: dict):
     if not combine_result or target_item["id"] not in item.get("combinable_with", []):
         return error(
             ErrorCode.INVALID_TARGET,
-            f"이 두 아이템은 조합할 수 없습니다.",
+            "이 두 아이템은 조합할 수 없습니다.",
         )
 
     # 재료 두 개 제거 후 결과 아이템 추가
