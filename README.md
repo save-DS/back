@@ -16,6 +16,16 @@ source venv/bin/activate    # Mac / Linux
 pip install -r requirements.txt
 ```
 
+### 3) AI 힌트용 API 키 설정 (선택)
+1인칭 HINT 버튼의 AI 자유 질문 기능을 쓰려면 Google Gemini API 키가 필요하다.
+무료 티어라 카드 등록 없이 발급 가능 (https://aistudio.google.com/apikey).
+```bash
+cp .env.example .env
+# .env 파일을 열어 GEMINI_API_KEY=... 채우기
+```
+키가 없어도 게임은 정상 동작하며, AI 힌트만 "키가 없다"는 안내를 띄운다.
+(모델 변경: `services/ai_hint.py`의 `MODEL` 상수. 기본 `gemini-2.0-flash`.)
+
 ## 실행
 
 ```bash

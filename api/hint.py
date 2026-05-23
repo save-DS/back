@@ -1,12 +1,14 @@
 """
-힌트 API (룰베이스).
+힌트 API.
 
-- GET /api/hint/maze     : 미로 BFS 최단 경로 (Issue #4)
-- GET /api/hint/puzzle   : 특정 퍼즐의 텍스트 힌트 + 부족 단서 안내
-- GET /api/hint/progress : 진행 분석 + 다음 목표 추천
-- GET /api/hint/item-use : 보유 아이템 활용 추천
+- GET  /api/hint/maze     : 미로 BFS 최단 경로 (미로 모드 전용, 그대로 유지)
+- GET  /api/hint/puzzle   : 특정 퍼즐의 텍스트 힌트 + 부족 단서 안내 (룰베이스)
+- GET  /api/hint/progress : 진행 분석 + 다음 목표 추천 (룰베이스)
+- GET  /api/hint/item-use : 보유 아이템 활용 추천 (룰베이스)
+- POST /api/hint/ask      : AI 자유 질문 (1인칭 HINT 버튼이 사용. Claude API)
 
-AI 자유 질문(/api/hint/ask)은 Issue #6에서 추가.
+룰베이스 힌트(puzzle/progress/item-use)는 AI 힌트의 내부 컨텍스트로도 쓰이고,
+API 키가 없을 때의 폴백으로도 활용 가능하도록 남겨둔다.
 """
 from flask import Blueprint, request
 
@@ -14,6 +16,7 @@ from api import success, error, ErrorCode
 from services.game_state import game_state
 from services.maze_bfs import next_step
 from services.puzzle_graph import get_puzzle_graph
+from services.ai_hint import ask_hint
 from utils.data_loader import get_data
 
 
@@ -162,3 +165,39 @@ def item_use_hint():
             })
 
     return success(data={"suggestions": suggestions})
+
+
+# ----------------------------------------------------------------------
+# 1인칭 - AI 자유 질문 (Claude API)
+# ----------------------------------------------------------------------
+@hint_bp.route("/ask", methods=["POST"])
+def ask_ai_hint():
+    body = request.get_json(silent=True) or {}
+    question = (body.get("question") or "").strip()
+    if not question:
+        return error(ErrorCode.INVALID_REQUEST, "질문을 입력해주세요.")
+
+    # 미로 모드에서는 AI 자유 질문 대신 미로 힌트(BFS)를 쓰도록 유도
+    if game_state.mode != "first_person":
+        return error(
+            ErrorCode.INVALID_STATE,
+            "AI 힌트는 1인칭 탐색 모드에서만 사용할 수 있습니다.",
+        )
+
+    game_state.ai_query_count += 1
+
+    try:
+        answer = ask_hint(question, game_state)
+    except RuntimeError as e:
+        # API 키 미설정 등 설정 문제
+        return error(ErrorCode.INVALID_STATE, str(e))
+    except Exception:
+        return error(
+            ErrorCode.INVALID_STATE,
+            "AI 힌트 생성에 실패했습니다. 잠시 후 다시 시도해주세요.",
+        )
+
+    return success(
+        data={"question": question, "answer": answer},
+        state_changed={"ai_query_count": game_state.ai_query_count},
+    )
