@@ -2,6 +2,9 @@
 폐연구실 탈출 게임 - 백엔드 진입점.
 Flask 서버를 실행하는 메인 파일.
 """
+from dotenv import load_dotenv
+load_dotenv()  # .env의 ANTHROPIC_API_KEY 등을 환경변수로 로딩 (import보다 먼저)
+
 from flask import Flask, jsonify
 from flask_cors import CORS
 

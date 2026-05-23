@@ -95,10 +95,18 @@ def _use_on_object(item: dict, target: dict):
             f"{item['name']}을(를) 여기에 쓸 수 없다.",
         )
 
+    # 선행 퍼즐 요구 (예: 컴퓨터는 로그인된 뒤에만 코드 노트로 해독 가능)
+    req_puzzle = target.get("use_requires_puzzle")
+    if req_puzzle and req_puzzle not in game_state.solved_puzzles:
+        return error(
+            ErrorCode.MISSING_REQUIREMENT,
+            target.get("narration_use_locked", "아직 사용할 수 없다."),
+        )
+
     state_changed: dict = {}
     result_text: str
 
-    # 단서 해독 (현미경에 스코프, 화이트보드에 UV 등)
+    # 단서 해독 (현미경에 스코프, 화이트보드에 UV, 컴퓨터에 코드 노트 등)
     clue_id = target.get("gives_clue_on_use")
     if clue_id:
         # 같은 단서를 또 발견하면 중복 push 방지
@@ -111,6 +119,8 @@ def _use_on_object(item: dict, target: dict):
             result_text = target.get("narration_with_scope", "단서가 드러났다.")
         elif item["id"] == "uv_flashlight":
             result_text = target.get("narration_with_uv", "단서가 드러났다.")
+        elif item["id"] == "code_note":
+            result_text = target.get("narration_decoded", "암호를 해독했다.")
         else:
             result_text = "단서가 드러났다."
 

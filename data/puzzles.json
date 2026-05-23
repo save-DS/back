@@ -21,9 +21,9 @@
     "id": "escape_door_keypad",
     "type": "word",
     "answer": "bang",
-    "required_clues": ["code_note", "research_doc"],
+    "required_clues": ["word_bang"],
     "required_item": "escape_key",
-    "hint": "코드 노트의 문자 매핑으로 연구일지의 코드를 해석하라.",
+    "hint": "컴퓨터에서 코드 노트로 해독한 단어를 키패드에 입력하라.",
     "triggers_clear": true
   }
 }

@@ -32,8 +32,9 @@
   "code_note": {
     "id": "code_note",
     "name": "코드 노트",
-    "description": "문자 매핑 코드가 적혀있는 노트.",
-    "icon": "code_note.png"
+    "description": "문자 매핑 코드가 적혀있는 노트. 암호 문서를 해독할 때 쓴다.",
+    "icon": "paper.png",
+    "usable_with": ["computer"]
   },
   "microscope_scope": {
     "id": "microscope_scope",

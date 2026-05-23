@@ -26,6 +26,7 @@ def _enrich_clue(clue_id: str) -> dict:
         "birthday_0418": "생일 4월 18일 (0418)",
         "research_doc": "연구 일지 문서",
         "code_note": "코드 매핑 노트",
+        "word_bang": "해독된 단어: BANG",
     }
     return {
         "id": clue_id,
