@@ -5,10 +5,13 @@
 - GET  /api/hint/puzzle   : 특정 퍼즐의 텍스트 힌트 + 부족 단서 안내 (룰베이스)
 - GET  /api/hint/progress : 진행 분석 + 다음 목표 추천 (룰베이스)
 - GET  /api/hint/item-use : 보유 아이템 활용 추천 (룰베이스)
-- POST /api/hint/ask      : AI 자유 질문 (1인칭 HINT 버튼이 사용. Claude API)
+- POST /api/hint/ask      : AI 자유 질문 (1인칭 HINT 버튼이 사용. Gemini API)
 
-룰베이스 힌트(puzzle/progress/item-use)는 AI 힌트의 내부 컨텍스트로도 쓰이고,
-API 키가 없을 때의 폴백으로도 활용 가능하도록 남겨둔다.
+[참고]
+현재 1인칭 HINT 버튼은 /ask(AI)만 호출한다. 룰베이스 힌트
+(puzzle/progress/item-use)는 PuzzleGraph(그래프 자료구조) 활용 예시이자
+API 키가 없을 때 붙일 수 있는 폴백용으로 남겨둔다.
+AI 힌트는 PuzzleGraph를 services/ai_hint.py에서 직접 호출해 컨텍스트로 쓴다.
 """
 from flask import Blueprint, request
 
