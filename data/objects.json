@@ -68,10 +68,15 @@
     "view": "center",
     "name": "컴퓨터",
     "narration_default": "잠긴 컴퓨터 화면이다. 비밀번호 4자리를 입력해야 한다.",
-    "narration_solved": "컴퓨터가 열렸다. 연구 일지가 보인다.",
+    "narration_solved": "컴퓨터가 열렸다. 화면에 암호 문서가 떠 있다. 코드 노트로 해독할 수 있을 것 같다.",
     "narration_wrong": "비밀번호가 일치하지 않습니다.",
     "puzzle": "computer_login",
-    "gives_clue_on_solve": "research_doc"
+    "gives_clue_on_solve": "research_doc",
+    "required_item": "code_note",
+    "gives_clue_on_use": "word_bang",
+    "use_requires_puzzle": "computer_login",
+    "narration_use_locked": "컴퓨터가 잠겨있다. 먼저 비밀번호로 로그인해야 한다.",
+    "narration_decoded": "코드 노트로 암호 문서를 해독했다. 'bang'이라는 단어가 나왔다."
   },
   "calendar": {
     "id": "calendar",
