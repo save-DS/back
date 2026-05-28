@@ -10,7 +10,10 @@
     "narration_wrong": "비밀번호가 일치하지 않습니다.",
     "puzzle": "cabinet_password",
     "gives_item_on_solve": "escape_key",
-    "initial_items": ["battery"]
+    "initial_items": [
+      "battery"
+    ],
+    "requires_explicit_pickup": true
   },
   "microscope": {
     "id": "microscope",
@@ -93,7 +96,8 @@
     "name": "책상 서랍",
     "narration_default": "책상 서랍이다.",
     "narration_opened": "손전등을 발견했다.",
-    "gives_item": "flashlight"
+    "gives_item": "flashlight",
+    "requires_explicit_pickup": true
   },
   "shelf_book": {
     "id": "shelf_book",
@@ -102,7 +106,8 @@
     "name": "왼쪽 책",
     "narration_default": "책 사이에 무언가 끼워져 있다.",
     "narration_opened": "현미경 스코프를 발견했다.",
-    "gives_item": "microscope_scope"
+    "gives_item": "microscope_scope",
+    "requires_explicit_pickup": true
   },
   "escape_door": {
     "id": "escape_door",

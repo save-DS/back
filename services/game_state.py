@@ -62,6 +62,9 @@ class GameState:
         # 해결한 퍼즐 / 조사한 오브젝트 (셋 - 중복 방지)
         self.solved_puzzles: set[str] = set()
         self.investigated_objects: set[str] = set()
+        # 어느 오브젝트에서 아이템을 꺼냈는지 (셋)
+        # 예: 캐비닛에서 건전지 꺼냄 → 'cabinet' 추가 → 다음 조사 시 shelf2 표시
+        self.taken_from_objects: set[str] = set()
 
         # 발견한 단서 (스택 - 최신순 표시용)
         self.found_clues = Stack()
@@ -143,6 +146,7 @@ class GameState:
             "inventory": self.inventory.to_list(),
             "solved_puzzles": list(self.solved_puzzles),
             "investigated_objects": list(self.investigated_objects),
+            "taken_from_objects": list(self.taken_from_objects),
             "found_clues": self.found_clues.to_list_newest_first(),
             "view_stack": self.view_stack.to_list(),
             "event_queue": self.event_queue.to_list(),
