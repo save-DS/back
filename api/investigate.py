@@ -59,18 +59,21 @@ def investigate():
         game_state.investigated_objects.add(object_id)
         state_changed["investigated_objects"] = list(game_state.investigated_objects)
 
-        # 단일 아이템 자동 지급 (예: 책상 서랍의 손전등)
-        single_item = obj.get("gives_item")
-        if single_item and game_state.inventory.add(single_item):
-            found_items.append(single_item)
+        # requires_explicit_pickup이 true면 아이템 자동지급 안 함
+        # (상세 팝업 안의 핫스팟을 직접 클릭해야 아이템 얻음 - /api/object/take 사용)
+        if not obj.get("requires_explicit_pickup"):
+            # 단일 아이템 자동 지급 (예: 코드 노트)
+            single_item = obj.get("gives_item")
+            if single_item and game_state.inventory.add(single_item):
+                found_items.append(single_item)
 
-        # 초기 아이템들 자동 지급 (예: 캐비닛 안의 건전지)
-        for item_id in obj.get("initial_items", []):
-            if game_state.inventory.add(item_id):
-                found_items.append(item_id)
+            # 초기 아이템들 자동 지급
+            for item_id in obj.get("initial_items", []):
+                if game_state.inventory.add(item_id):
+                    found_items.append(item_id)
 
-        if found_items:
-            state_changed["inventory"] = game_state.inventory.to_list()
+            if found_items:
+                state_changed["inventory"] = game_state.inventory.to_list()
 
         # 단서 자동 지급 (예: 달력의 0418, 러그 아래 숫자)
         clue_id = obj.get("gives_clue_on_investigate")

@@ -19,6 +19,7 @@ from api.maze import maze_bp
 from api.hint import hint_bp
 from api.ui import ui_bp
 from api.events import events_bp
+from api.object import object_bp
 
 
 # Flask 앱 생성
@@ -43,6 +44,7 @@ app.register_blueprint(maze_bp)
 app.register_blueprint(hint_bp)
 app.register_blueprint(ui_bp)
 app.register_blueprint(events_bp)
+app.register_blueprint(object_bp)
 
 
 # ----------------------------------------------------------------------
