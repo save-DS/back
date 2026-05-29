@@ -132,7 +132,7 @@ def regenerate():
     if err:
         return err
 
-    maze = generate_full_maze(width=15, height=9, trap_count=5)
+    maze = generate_full_maze(width=20, height=14, trap_count=5)
     game_state.maze_grid = maze["grid"]
     game_state.maze_start = maze["start"]
     game_state.maze_exit = maze["exit"]

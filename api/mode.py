@@ -18,7 +18,7 @@ mode_bp = Blueprint("mode", __name__, url_prefix="/api/mode")
 def _ensure_maze_exists() -> dict:
     """미로가 아직 없으면 새로 생성. 있으면 기존 것 반환."""
     if not game_state.maze_grid:
-        maze = generate_full_maze(width=15, height=9, trap_count=5)
+        maze = generate_full_maze(width=20, height=14, trap_count=5)
         game_state.maze_grid = maze["grid"]
         game_state.maze_start = maze["start"]
         game_state.maze_exit = maze["exit"]
